@@ -7,6 +7,6 @@
     "start": "echo 'Hanya untuk Vercel'"
   },
   "engines": {
-    "node": "18.x"
+    "node": "22.x"
   }
 }
