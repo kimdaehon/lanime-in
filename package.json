@@ -1,0 +1,12 @@
+{
+  "name": "lanime-proxy-backend",
+  "version": "1.0.0",
+  "description": "Proxy untuk Lanime",
+  "main": "index.html",
+  "scripts": {
+    "start": "echo 'Hanya untuk Vercel'"
+  },
+  "engines": {
+    "node": "18.x"
+  }
+}
