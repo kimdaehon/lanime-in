@@ -408,83 +408,81 @@
     }
     
 /* ================= FORM UPLOAD MODERN ================= */
-/* ================= PERBAIKAN UI FORM UPLOAD (RESPONSIF) ================= */
-.form-card {
-  max-width: 700px;
-  margin: 0 auto;
-  background: var(--card);
-  border-radius: 24px;
-  padding: 1.5rem;
-  box-shadow: var(--shadow-lg);
-}
-
-.image-upload-area {
-  background: var(--bg);
-  border-radius: 16px;
-  padding: 1rem;
-  transition: all 0.2s;
-}
-
-.link-entry {
-  background: var(--bg);
-  padding: 0.75rem;
-  border-radius: 12px;
-  margin-bottom: 0.75rem;
-}
-
-.link-entry input {
-  background: var(--card);
-}
-
-/* Perbaikan untuk mode gelap */
-[data-theme="dark"] .image-upload-area,
-[data-theme="dark"] .link-entry {
-  background: #2a2a2a;
-}
-
-[data-theme="dark"] .link-entry input {
-  background: #1e1e1e;
-  border-color: #444;
-}
-
-/* Responsif untuk HP */
+/* ================= RESPONSIF HP UNTUK FORM UPLOAD ================= */
 @media (max-width: 640px) {
   .form-card {
+    margin: 0;
     padding: 1rem;
-    border-radius: 20px;
+    border-radius: 16px;
+  }
+  .form-card h2 {
+    font-size: 1.3rem;
+    padding-left: 0.75rem;
+  }
+  .form-group {
+    margin-bottom: 1rem;
+  }
+  .form-group label {
+    font-size: 0.85rem;
+  }
+  .form-group input:not([type="checkbox"]),
+  .form-group select,
+  .form-group textarea {
+    padding: 0.6rem 0.8rem;
+    font-size: 0.9rem;
   }
   .image-upload-area {
+    flex-direction: column;
+    align-items: center;
     padding: 0.75rem;
   }
   .image-preview {
     width: 100%;
-    max-height: 180px;
+    max-height: 160px;
+    height: auto;
+  }
+  .upload-controls {
+    width: 100%;
+    align-items: stretch;
+  }
+  .btn-upload {
+    width: 100%;
+    justify-content: center;
   }
   .link-entry {
     flex-direction: column;
     align-items: stretch;
     gap: 0.5rem;
+    padding: 0.75rem;
   }
   .link-entry input {
     width: 100%;
   }
   .link-entry .remove-link-btn {
     align-self: flex-end;
-    margin-top: 0.25rem;
   }
-  .btn-upload {
+  .btn-add-link {
     width: 100%;
     justify-content: center;
   }
-  .upload-controls {
-    align-items: stretch;
-  }
-  .form-group label {
+  .checkbox-label {
     font-size: 0.85rem;
   }
   .btn-submit, .btn-logout {
     padding: 0.7rem;
+    font-size: 0.9rem;
   }
+  .upload-hint {
+    text-align: center;
+  }
+}
+
+.form-group select {
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 1rem center;
+  background-size: 1rem;
 }
     /* --- AKHIR CSS POPUP --- */
 

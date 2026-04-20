@@ -497,10 +497,10 @@ document.addEventListener('DOMContentLoaded', () => {
       <div class="form-group">
         <label for="category">Kategori</label>
         <select id="category" name="category" required>
-          <option value="Template">📁 Template</option>
-          <option value="Addon">🧩 Addon</option>
-          <option value="TexturePack">🎨 TexturePack</option>
-          <option value="Game">🎮 Game</option>
+  <option value="Template">Template</option>
+  <option value="Addon">Addon</option>
+  <option value="TexturePack">TexturePack</option>
+  <option value="Game">Game</option>
         </select>
       </div>
     `;
@@ -550,7 +550,7 @@ document.addEventListener('DOMContentLoaded', () => {
           <div class="form-group checkbox-group">
             <label class="checkbox-label">
               <input type="checkbox" id="isFeatured" name="isFeatured" ${isEditing && postToEdit?.isFeatured ? 'checked' : ''}>
-              <span>⭐ Jadikan Pilihan Editor</span>
+              <span>Jadikan Pilihan Editor</span>
             </label>
           </div>
 
