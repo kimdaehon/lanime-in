@@ -483,7 +483,6 @@ document.addEventListener('DOMContentLoaded', () => {
       
       async function getProfile(user) { if (!user) return null; const { data, error } = await supabase.from('profiles').select('*').eq('id', user.id).single(); if (error) { console.error("Gagal mengambil profil:", error); return null; } return data; }
       
-      // ================= MODIFIKASI RENDER ADMIN FORM =================
       function renderAdminForm(postToEdit = null, formType = 'dlc') {
   const isEditing = postToEdit !== null;
   let title = '';
@@ -492,7 +491,7 @@ document.addEventListener('DOMContentLoaded', () => {
   if (formType === 'info') {
     title = isEditing ? 'Edit Informasi' : 'Buat Informasi Baru';
     categoryHTML = `<input type="hidden" id="category" name="category" value="Informasi">`;
-  } else { 
+  } else {
     title = isEditing ? 'Edit Postingan' : 'Buat Postingan Baru';
     categoryHTML = `
       <div class="form-group">
@@ -506,72 +505,73 @@ document.addEventListener('DOMContentLoaded', () => {
       </div>
     `;
   }
-  
+
   const currentImg = isEditing && postToEdit.img ? postToEdit.img : '';
-  
+
   authContainer.innerHTML = `
-    <a href="#" class="admin-nav-link" id="go-to-profile-view">← Kembali ke Profil</a>
-    <div class="form-card">
-      <h2>${title}</h2>
-      <form id="upload-form" data-editing-id="${isEditing ? postToEdit.id : ''}">
-        <div class="form-group">
-          <label for="title">Judul <span class="required">*</span></label>
-          <input type="text" id="title" name="title" required value="${isEditing ? escapeHtml(postToEdit.title) : ''}" placeholder="Masukkan judul postingan">
-        </div>
-        
-        <div class="form-group">
-          <label for="description">Deskripsi <span class="required">*</span></label>
-          <textarea id="description" name="description" rows="5" required placeholder="Jelaskan konten ini...">${isEditing ? escapeHtml(postToEdit.description) : ''}</textarea>
-        </div>
-        
-        ${categoryHTML}
-        
-        <div class="form-group">
-          <label>Gambar Postingan <span class="required">*</span></label>
-          <div class="image-upload-area" id="image-upload-area">
-            <div class="image-preview" id="image-preview">
-              ${currentImg ? `<img src="${currentImg}" alt="Preview">` : '<div class="placeholder"><i class="fas fa-image"></i><span>Belum ada gambar</span></div>'}
-            </div>
-            <div class="upload-controls">
-              <label for="img-file" class="btn-upload"><i class="fas fa-cloud-upload-alt"></i> Pilih Gambar</label>
-              <input type="file" id="img-file" name="img-file" accept="image/jpeg,image/png,image/webp,image/gif" hidden>
-              <small class="upload-hint">Maks 5MB, format JPG, PNG, WEBP, GIF</small>
-            </div>
-            <input type="hidden" id="img-url" name="img-url" value="${currentImg}">
+    <div class="form-container">
+      <a href="#" class="back-link" id="go-to-profile-view">← Kembali ke Profil</a>
+      <div class="form-card">
+        <h2>${title}</h2>
+        <form id="upload-form" data-editing-id="${isEditing ? postToEdit.id : ''}">
+          <div class="form-group">
+            <label for="title">Judul <span class="required">*</span></label>
+            <input type="text" id="title" name="title" required value="${escapeHtml(postToEdit?.title || '')}" placeholder="Masukkan judul postingan">
           </div>
-        </div>
-        
-        <div class="form-group">
-          <label>Link Unduhan</label>
-          <div id="dynamic-links-container" class="links-container"></div>
-          <button type="button" id="add-link-btn" class="btn-add-link"><i class="fas fa-plus-circle"></i> Tambah Link</button>
-        </div>
-        
-        <div class="form-group checkbox-group">
-          <label class="checkbox-label">
-            <input type="checkbox" id="isFeatured" name="isFeatured" ${isEditing && postToEdit.isFeatured ? 'checked' : ''}>
-            <span>⭐ Jadikan Pilihan Editor</span>
-          </label>
-        </div>
-        
-        <div class="form-actions">
-          <button type="submit" id="submit-post-btn" class="btn-submit"><i class="fas fa-save"></i> ${isEditing ? 'Simpan Perubahan' : 'Upload Postingan'}</button>
-        </div>
-      </form>
-      <button id="logout-btn" class="btn-logout"><i class="fas fa-sign-out-alt"></i> Logout</button>
+
+          <div class="form-group">
+            <label for="description">Deskripsi <span class="required">*</span></label>
+            <textarea id="description" name="description" rows="5" required placeholder="Jelaskan konten ini...">${escapeHtml(postToEdit?.description || '')}</textarea>
+          </div>
+
+          ${categoryHTML}
+
+          <div class="form-group">
+            <label>Gambar Postingan <span class="required">*</span></label>
+            <div class="image-upload-wrapper">
+              <div class="image-preview" id="imagePreview">
+                ${currentImg ? `<img src="${currentImg}" alt="Preview">` : '<div class="no-image"><i class="fas fa-image"></i><span>Belum ada gambar</span></div>'}
+              </div>
+              <div class="upload-actions">
+                <label for="imgFile" class="btn-upload"><i class="fas fa-cloud-upload-alt"></i> Pilih Gambar</label>
+                <input type="file" id="imgFile" name="img-file" accept="image/jpeg,image/png,image/webp,image/gif" hidden>
+                <small class="hint">Maks 5MB, format JPG, PNG, WEBP, GIF</small>
+              </div>
+              <input type="hidden" id="imgUrl" name="img-url" value="${currentImg}">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Link Unduhan</label>
+            <div id="linksContainer" class="links-container"></div>
+            <button type="button" id="addLinkBtn" class="btn-add-link"><i class="fas fa-plus-circle"></i> Tambah Link</button>
+          </div>
+
+          <div class="form-group checkbox-group">
+            <label class="checkbox-label">
+              <input type="checkbox" id="isFeatured" name="isFeatured" ${isEditing && postToEdit?.isFeatured ? 'checked' : ''}>
+              <span>⭐ Jadikan Pilihan Editor</span>
+            </label>
+          </div>
+
+          <div class="form-actions">
+            <button type="submit" id="submitBtn" class="btn-submit"><i class="fas fa-save"></i> ${isEditing ? 'Simpan Perubahan' : 'Upload Postingan'}</button>
+          </div>
+        </form>
+        <button id="logoutBtn" class="btn-logout"><i class="fas fa-sign-out-alt"></i> Logout</button>
+      </div>
     </div>
   `;
 
   // Set value untuk select category jika edit
   if (isEditing && formType !== 'info') {
-    const categorySelect = $('#category');
-    if (categorySelect) categorySelect.value = postToEdit.category;
+    const catSelect = document.getElementById('category');
+    if (catSelect) catSelect.value = postToEdit.category;
   }
 
-  // Setup preview gambar
-  const fileInput = $('#img-file');
-  const previewContainer = $('#image-preview');
-  
+  // Preview gambar
+  const fileInput = document.getElementById('imgFile');
+  const previewDiv = document.getElementById('imagePreview');
   fileInput.addEventListener('change', (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -588,37 +588,36 @@ document.addEventListener('DOMContentLoaded', () => {
       }
       const reader = new FileReader();
       reader.onload = (ev) => {
-        previewContainer.innerHTML = `<img src="${ev.target.result}" alt="Preview">`;
+        previewDiv.innerHTML = `<img src="${ev.target.result}" alt="Preview">`;
       };
       reader.readAsDataURL(file);
     } else {
-      // Kembalikan ke gambar lama jika ada
-      const oldImg = $('#img-url').value;
+      const oldImg = document.getElementById('imgUrl').value;
       if (oldImg) {
-        previewContainer.innerHTML = `<img src="${oldImg}" alt="Preview">`;
+        previewDiv.innerHTML = `<img src="${oldImg}" alt="Preview">`;
       } else {
-        previewContainer.innerHTML = '<div class="placeholder"><i class="fas fa-image"></i><span>Belum ada gambar</span></div>';
+        previewDiv.innerHTML = '<div class="no-image"><i class="fas fa-image"></i><span>Belum ada gambar</span></div>';
       }
     }
   });
 
-  // Setup dynamic links
-  const linksContainer = $('#dynamic-links-container');
+  // Dynamic links
+  const linksContainer = document.getElementById('linksContainer');
   const addLinkRow = (name = '', url = '') => {
-    const linkEntry = document.createElement('div');
-    linkEntry.className = 'link-entry';
-    linkEntry.innerHTML = `
-      <input type="text" class="link-name-input" placeholder="Nama (contoh: MediaFire)" value="${escapeHtml(name)}" required>
-      <input type="url" class="link-url-input" placeholder="URL link" value="${escapeHtml(url)}" required>
-      <button type="button" class="remove-link-btn" title="Hapus link"><i class="fas fa-trash-alt"></i></button>
+    const div = document.createElement('div');
+    div.className = 'link-row';
+    div.innerHTML = `
+      <input type="text" class="link-name" placeholder="Nama (contoh: MediaFire)" value="${escapeHtml(name)}" required>
+      <input type="url" class="link-url" placeholder="URL link" value="${escapeHtml(url)}" required>
+      <button type="button" class="remove-link"><i class="fas fa-trash-alt"></i></button>
     `;
-    linksContainer.appendChild(linkEntry);
-    linkEntry.querySelector('.remove-link-btn').addEventListener('click', () => linkEntry.remove());
+    linksContainer.appendChild(div);
+    div.querySelector('.remove-link').addEventListener('click', () => div.remove());
   };
 
-  $('#add-link-btn').addEventListener('click', () => addLinkRow());
+  document.getElementById('addLinkBtn').addEventListener('click', () => addLinkRow());
 
-  if (isEditing && postToEdit.links && typeof postToEdit.links === 'object') {
+  if (isEditing && postToEdit?.links && typeof postToEdit.links === 'object') {
     for (const [name, url] of Object.entries(postToEdit.links)) {
       if (url) addLinkRow(name, url);
     }
@@ -626,13 +625,14 @@ document.addEventListener('DOMContentLoaded', () => {
     addLinkRow();
   }
 
-  // Submit handler
-  $('#upload-form').addEventListener('submit', handleSubmit);
-  $('#logout-btn').addEventListener('click', handleLogout);
-  $('#go-to-profile-view').addEventListener('click', (e) => { e.preventDefault(); renderProfileView(); });
+  document.getElementById('upload-form').addEventListener('submit', handleSubmit);
+  document.getElementById('logoutBtn').addEventListener('click', handleLogout);
+  document.getElementById('go-to-profile-view').addEventListener('click', (e) => {
+    e.preventDefault();
+    renderProfileView();
+  });
 }
 
-// Helper function untuk escape HTML (mencegah XSS)
 function escapeHtml(str) {
   if (!str) return '';
   return str.replace(/[&<>]/g, function(m) {
@@ -640,8 +640,6 @@ function escapeHtml(str) {
     if (m === '<') return '&lt;';
     if (m === '>') return '&gt;';
     return m;
-  }).replace(/[\uD800-\uDBFF][\uDC00-\uDFFF]/g, function(c) {
-    return c;
   });
 }
 

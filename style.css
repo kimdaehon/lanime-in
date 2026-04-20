@@ -408,299 +408,82 @@
     }
     
 /* ================= FORM UPLOAD MODERN ================= */
+/* ================= PERBAIKAN UI FORM UPLOAD (RESPONSIF) ================= */
 .form-card {
+  max-width: 700px;
+  margin: 0 auto;
   background: var(--card);
   border-radius: 24px;
   padding: 1.5rem;
   box-shadow: var(--shadow-lg);
-  margin: 0.5rem 0;
 }
 
-.form-card h2 {
-  font-size: 1.6rem;
-  margin-bottom: 1.5rem;
-  font-weight: 600;
-  border-left: 4px solid var(--accent);
-  padding-left: 1rem;
-}
-
-.form-group {
-  margin-bottom: 1.5rem;
-}
-
-.form-group label {
-  display: block;
-  margin-bottom: 0.5rem;
-  font-weight: 600;
-  color: var(--text);
-}
-
-.form-group .required {
-  color: var(--danger);
-  margin-left: 0.2rem;
-}
-
-.form-group input:not([type="checkbox"]),
-.form-group select,
-.form-group textarea {
-  width: 100%;
-  padding: 0.75rem 1rem;
-  border-radius: 12px;
-  border: 1px solid var(--border);
-  background: var(--bg);
-  color: var(--text);
-  font-size: 0.95rem;
-  transition: all 0.2s ease;
-}
-
-.form-group input:focus,
-.form-group select:focus,
-.form-group textarea:focus {
-  outline: none;
-  border-color: var(--accent);
-  box-shadow: 0 0 0 3px var(--ring);
-}
-
-/* Image upload area */
 .image-upload-area {
-  display: flex;
-  gap: 1rem;
-  flex-wrap: wrap;
-  align-items: flex-start;
-}
-
-.image-preview {
-  width: 120px;
-  height: 120px;
-  border-radius: 16px;
   background: var(--bg);
-  border: 1px dashed var(--border);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
-  position: relative;
-}
-
-.image-preview img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.image-preview .placeholder {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.5rem;
-  color: var(--muted);
-  font-size: 0.8rem;
-  text-align: center;
-}
-
-.image-preview .placeholder i {
-  font-size: 2rem;
-}
-
-.upload-controls {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-
-.btn-upload {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  background: var(--accent);
-  color: white;
-  padding: 0.6rem 1rem;
-  border-radius: 40px;
-  font-size: 0.9rem;
-  font-weight: 500;
-  cursor: pointer;
-  width: fit-content;
-  transition: background 0.2s;
-}
-
-.btn-upload:hover {
-  background: var(--accent-dark);
-}
-
-.upload-hint {
-  font-size: 0.75rem;
-  color: var(--muted);
-}
-
-/* Links container */
-.links-container {
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-  margin-bottom: 1rem;
+  border-radius: 16px;
+  padding: 1rem;
+  transition: all 0.2s;
 }
 
 .link-entry {
-  display: flex;
-  gap: 0.75rem;
-  align-items: center;
-  flex-wrap: wrap;
+  background: var(--bg);
+  padding: 0.75rem;
+  border-radius: 12px;
+  margin-bottom: 0.75rem;
 }
 
 .link-entry input {
-  flex: 1;
-  padding: 0.6rem 0.8rem;
-  border-radius: 10px;
-  border: 1px solid var(--border);
-  background: var(--bg);
-  color: var(--text);
+  background: var(--card);
 }
 
-.link-entry .remove-link-btn {
-  background: var(--danger);
-  color: white;
-  border: none;
-  width: 36px;
-  height: 36px;
-  border-radius: 10px;
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  transition: transform 0.1s;
+/* Perbaikan untuk mode gelap */
+[data-theme="dark"] .image-upload-area,
+[data-theme="dark"] .link-entry {
+  background: #2a2a2a;
 }
 
-.link-entry .remove-link-btn:hover {
-  transform: scale(1.05);
+[data-theme="dark"] .link-entry input {
+  background: #1e1e1e;
+  border-color: #444;
 }
 
-.btn-add-link {
-  background: var(--success);
-  color: white;
-  border: none;
-  padding: 0.6rem 1rem;
-  border-radius: 40px;
-  font-size: 0.85rem;
-  font-weight: 500;
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  width: auto;
-  transition: background 0.2s;
-}
-
-.btn-add-link:hover {
-  filter: brightness(0.9);
-}
-
-/* Checkbox group */
-.checkbox-group {
-  margin-top: 0.5rem;
-}
-
-.checkbox-label {
-  display: flex;
-  align-items: center;
-  gap: 0.6rem;
-  cursor: pointer;
-  font-weight: normal;
-  color: var(--text);
-}
-
-.checkbox-label input {
-  width: 18px;
-  height: 18px;
-  margin: 0;
-  cursor: pointer;
-}
-
-/* Form actions */
-.form-actions {
-  margin-top: 2rem;
-}
-
-.btn-submit {
-  background: var(--accent);
-  color: white;
-  border: none;
-  padding: 0.85rem;
-  border-radius: 40px;
-  font-size: 1rem;
-  font-weight: 600;
-  width: 100%;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  transition: all 0.2s;
-}
-
-.btn-submit:hover {
-  background: var(--accent-dark);
-  transform: translateY(-2px);
-}
-
-.btn-submit:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-  transform: none;
-}
-
-.btn-logout {
-  background: transparent;
-  border: 1px solid var(--danger);
-  color: var(--danger);
-  padding: 0.75rem;
-  border-radius: 40px;
-  font-size: 0.9rem;
-  font-weight: 500;
-  width: 100%;
-  margin-top: 1rem;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  transition: all 0.2s;
-}
-
-.btn-logout:hover {
-  background: var(--danger);
-  color: white;
-}
-
-.admin-nav-link {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.3rem;
-  color: var(--accent);
-  text-decoration: none;
-  margin-bottom: 1rem;
-  font-weight: 500;
-}
-
-/* Responsive */
+/* Responsif untuk HP */
 @media (max-width: 640px) {
+  .form-card {
+    padding: 1rem;
+    border-radius: 20px;
+  }
   .image-upload-area {
-    flex-direction: column;
-    align-items: center;
+    padding: 0.75rem;
   }
   .image-preview {
     width: 100%;
-    height: auto;
     max-height: 180px;
   }
   .link-entry {
     flex-direction: column;
+    align-items: stretch;
+    gap: 0.5rem;
   }
   .link-entry input {
     width: 100%;
   }
   .link-entry .remove-link-btn {
     align-self: flex-end;
+    margin-top: 0.25rem;
+  }
+  .btn-upload {
+    width: 100%;
+    justify-content: center;
+  }
+  .upload-controls {
+    align-items: stretch;
+  }
+  .form-group label {
+    font-size: 0.85rem;
+  }
+  .btn-submit, .btn-logout {
+    padding: 0.7rem;
   }
 }
     /* --- AKHIR CSS POPUP --- */
