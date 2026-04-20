@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Luminox</title>
+  
+  <link rel="icon" href="https://www.dropbox.com/scl/fi/yz8831kakxyc5f3t5f0dl/f8968f32c554ba5cd6bcab519fc0fae8.jpg?rlkey=398wt14ned3ugz41gjz3yx9en&st=6cfbpj8t&dl=1">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div class="app-layout">
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <a href="#" class="sidebar-logo">
+          <img src="https://www.dropbox.com/scl/fi/yz8831kakxyc5f3t5f0dl/f8968f32c554ba5cd6bcab519fc0fae8.jpg?rlkey=398wt14ned3ugz41gjz3yx9en&st=6cfbpj8t&dl=1" alt="logo">
+          <div class="sidebar-logo-text"><h2>LuminoX</h2><p>Minecraft And Game</p></div>
+        </a>
+      </div>
+      <nav class="sidebar-menu">
+        <p class="menu-heading">Menu</p>
+        <div class="menu-item active" data-category=""><i class="fas fa-home"></i> Semua Postingan</div>
+        <div class="menu-item" data-category="featured"><i class="fas fa-star"></i> Pilihan Editor</div>
+        <div class="menu-item" data-category="wishlist"><i class="fas fa-heart"></i> Wishlist</div>
+        <div class="menu-item" data-category="history"><i class="fas fa-history"></i> Riwayat Unduhan</div>
+        <p class="menu-heading">Kategori</p>
+        <div class="menu-item" data-category="addon"><i class="fas fa-puzzle-piece"></i> Addon</div>
+        <div class="menu-item" data-category="template"><i class="fas fa-paint-brush"></i> Template</div>
+        <div class="menu-item" data-category="texturepack"><i class="fas fa-calendar-alt"></i> TexturePack</div>
+        <div class="menu-item" data-category="game"><i class="fas fa-gamepad"></i> Game</div>
+        <div class="menu-item" data-category="informasi"><i class="fas fa-info-circle"></i> Informasi</div>
+        <p class="menu-heading">Interaksi</p>
+        <div class="menu-item" id="request-menu-btn"><i class="fas fa-bullhorn"></i> Request</div>
+        <div class="menu-item" id="chat-menu-btn"><i class="fas fa-comments"></i> Chat</div>
+        <a href="https://linktr.ee/noirrv" target="_blank" rel="noopener noreferrer" class="menu-item"><i class="fas fa-link"></i> Linktree</a>
+        <p class="menu-heading">Akun</p>
+        <div class="menu-item" id="auth-menu-btn"><i class="fas fa-user-circle"></i><span id="auth-menu-text">Login</span></div>
+      </nav>
+    </aside>
+
+    <div class="content-wrapper">
+      <header class="app-header" id="app-header">
+        <div class="header-left">
+            <button id="menu-toggle" class="header-icon-btn"><i class="fas fa-bars"></i></button>
+        </div>
+        <div class="header-search-container">
+            <input type="search" id="header-search-input" placeholder="Cari postingan..." autocomplete="off">
+        </div>
+        <div class="header-right">
+            <button id="search-toggle" class="header-icon-btn">
+                <i class="fas fa-search"></i>
+                <i class="fas fa-times"></i>
+            </button>
+            <button id="notifications-toggle" class="header-icon-btn" title="Aktifkan Notifikasi">
+                <i class="fas fa-bell"></i>
+            </button>
+            <button id="theme-toggle" class="header-icon-btn"><i class="fas fa-moon"></i></button>
+        </div>
+      </header>
+      <main>
+        <h1 class="page-title" id="page-title">Postingan Terbaru</h1>
+        <section id="post-grid"></section>
+        <section id="skeleton-grid" class="hidden"></section>
+      </main>
+      <section id="chat-view" class="hidden"></section>
+    </div>
+  </div>
+
+  <div class="backdrop" id="backdrop"></div>
+
+  <nav class="bottom-nav">
+    <div class="nav-item active" data-category=""><i class="fas fa-home"></i><span class="nav-text">Home</span></div>
+    <div class="nav-item" data-category="featured"><i class="fas fa-star"></i><span class="nav-text">Pilihan</span></div>
+    <div class="nav-item" data-category="wishlist"><i class="fas fa-heart"></i><span class="nav-text">Wishlist</span></div>
+    <div class="nav-item" id="auth-bottom-nav-btn"><i class="fas fa-user-circle"></i><span class="nav-text">Akun</span></div>
+  </nav>
+  
+  <div id="message-context-menu" class="message-context-menu">
+      <button id="edit-msg-btn" class="context-menu-btn"><i class="fas fa-pencil-alt"></i> Edit</button>
+      <button id="delete-msg-btn" class="context-menu-btn delete"><i class="fas fa-trash"></i> Hapus</button>
+  </div>
+
+  <div id="post-modal-wrapper">
+    <div class="modal-backdrop"></div>
+    <div id="post-modal" class="modal-container">
+        <div class="modal-content">
+            <header id="post-modal-header">
+                <img id="post-modal-img" src="" alt="Detail Gambar Postingan">
+                <button id="post-modal-close" class="header-icon-btn close-modal"><i class="fas fa-times"></i></button>
+            </header>
+            <div class="post-details">
+                <div id="modal-category"></div>
+                <h3 id="modal-title"></h3>
+                <p id="modal-desc"></p>
+                <div class="download-section">
+                    <h4>Unduh File</h4>
+                    <div class="download-buttons" id="modal-download-buttons">
+                        </div>
+                </div>
+            </div>
+            <div class="comment-section">
+                <h4>Komentar</h4>
+                <div id="comment-form-container"></div>
+                <div id="comment-list"></div>
+            </div>
+        </div>
+    </div>
+  </div>
+
+  <div id="auth-modal-wrapper">
+    <div class="modal-backdrop" id="auth-modal-backdrop"></div>
+    <div class="modal-container">
+      <div class="modal-content" style="max-width: 420px; position: relative;">
+        <button id="auth-modal-close" class="header-icon-btn" style="position:absolute; top:0.5rem; right:0.5rem; z-index:10;"><i class="fas fa-times"></i></button>
+        <div id="auth-container"></div>
+      </div>
+    </div>
+  </div>
+
+  <div id="request-modal-wrapper">
+    <div class="modal-backdrop" id="request-modal-backdrop"></div>
+    <div class="modal-container">
+      <div class="modal-content" style="max-width: 480px; position: relative; max-height: none;">
+        <button id="request-modal-close" class="header-icon-btn" style="position:absolute; top:0.5rem; right:0.5rem; z-index:10;"><i class="fas fa-times"></i></button>
+        <div id="request-container" style="padding: 1.5rem 2rem;"></div>
+      </div>
+    </div>
+  </div>
+
+  <div id="notification-container"></div>
+
+  <div id="welcome-popup-wrapper">
+    <div class="popup-backdrop"></div>
+    <div class="popup-content">
+      <button class="popup-close-btn">&times;</button>
+      <img src="https://res.cloudinary.com/do3yj5r1m/image/upload/v1761936174/nkygekuwevhh11lwi82l.jpg" alt="Welcome To Luminox">
+    </div>
+  </div>
+<script src="script.js"></script>
+</body>
+</html>
