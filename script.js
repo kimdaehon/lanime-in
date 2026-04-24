@@ -497,10 +497,10 @@ document.addEventListener('DOMContentLoaded', () => {
       <div class="form-group">
         <label for="category">Kategori</label>
         <select id="category" name="category" required>
-  <option value="Template">Template</option>
-  <option value="Addon">Addon</option>
-  <option value="TexturePack">TexturePack</option>
-  <option value="Game">Game</option>
+          <option value="Template">📁 Template</option>
+          <option value="Addon">🧩 Addon</option>
+          <option value="TexturePack">🎨 TexturePack</option>
+          <option value="Game">🎮 Game</option>
         </select>
       </div>
     `;
@@ -509,69 +509,62 @@ document.addEventListener('DOMContentLoaded', () => {
   const currentImg = isEditing && postToEdit.img ? postToEdit.img : '';
 
   authContainer.innerHTML = `
-    <div class="form-container">
-      <a href="#" class="back-link" id="go-to-profile-view">← Kembali ke Profil</a>
-      <div class="form-card">
-        <h2>${title}</h2>
-        <form id="upload-form" data-editing-id="${isEditing ? postToEdit.id : ''}">
-          <div class="form-group">
-            <label for="title">Judul <span class="required">*</span></label>
-            <input type="text" id="title" name="title" required value="${escapeHtml(postToEdit?.title || '')}" placeholder="Masukkan judul postingan">
-          </div>
-
-          <div class="form-group">
-            <label for="description">Deskripsi <span class="required">*</span></label>
-            <textarea id="description" name="description" rows="5" required placeholder="Jelaskan konten ini...">${escapeHtml(postToEdit?.description || '')}</textarea>
-          </div>
-
-          ${categoryHTML}
-
-          <div class="form-group">
-            <label>Gambar Postingan <span class="required">*</span></label>
-            <div class="image-upload-wrapper">
-              <div class="image-preview" id="imagePreview">
-                ${currentImg ? `<img src="${currentImg}" alt="Preview">` : '<div class="no-image"><i class="fas fa-image"></i><span>Belum ada gambar</span></div>'}
-              </div>
-              <div class="upload-actions">
-                <label for="imgFile" class="btn-upload"><i class="fas fa-cloud-upload-alt"></i> Pilih Gambar</label>
-                <input type="file" id="imgFile" name="img-file" accept="image/jpeg,image/png,image/webp,image/gif" hidden>
-                <small class="hint">Maks 5MB, format JPG, PNG, WEBP, GIF</small>
-              </div>
-              <input type="hidden" id="imgUrl" name="img-url" value="${currentImg}">
+    <div style="display: flex; justify-content: flex-start;">
+      <a href="#" id="go-to-profile-view" class="btn-back-icon" title="Kembali ke Profil"><i class="fas fa-arrow-left"></i></a>
+    </div>
+    <div class="form-card">
+      <h2>${title}</h2>
+      <form id="upload-form" data-editing-id="${isEditing ? postToEdit.id : ''}">
+        <div class="form-group">
+          <label for="title">Judul <span class="required">*</span></label>
+          <input type="text" id="title" name="title" required value="${isEditing ? escapeHtml(postToEdit.title) : ''}" placeholder="Masukkan judul postingan">
+        </div>
+        <div class="form-group">
+          <label for="description">Deskripsi <span class="required">*</span></label>
+          <textarea id="description" name="description" rows="5" required placeholder="Jelaskan konten ini...">${isEditing ? escapeHtml(postToEdit.description) : ''}</textarea>
+        </div>
+        ${categoryHTML}
+        <div class="form-group">
+          <label>Gambar Postingan <span class="required">*</span></label>
+          <div class="image-upload-area">
+            <div class="image-preview" id="image-preview">
+              ${currentImg ? `<img src="${currentImg}" alt="Preview">` : '<div class="placeholder"><i class="fas fa-image"></i><span>Belum ada gambar</span></div>'}
             </div>
+            <div class="upload-controls">
+              <label for="img-file" class="btn-upload"><i class="fas fa-cloud-upload-alt"></i> Pilih Gambar</label>
+              <input type="file" id="img-file" name="img-file" accept="image/jpeg,image/png,image/webp,image/gif" hidden>
+              <small class="upload-hint">Maks 5MB, format JPG, PNG, WEBP, GIF</small>
+            </div>
+            <input type="hidden" id="img-url" name="img-url" value="${currentImg}">
           </div>
-
-          <div class="form-group">
-            <label>Link Unduhan</label>
-            <div id="linksContainer" class="links-container"></div>
-            <button type="button" id="addLinkBtn" class="btn-add-link"><i class="fas fa-plus-circle"></i> Tambah Link</button>
-          </div>
-
-          <div class="form-group checkbox-group">
-            <label class="checkbox-label">
-              <input type="checkbox" id="isFeatured" name="isFeatured" ${isEditing && postToEdit?.isFeatured ? 'checked' : ''}>
-              <span>Jadikan Pilihan Editor</span>
-            </label>
-          </div>
-
-          <div class="form-actions">
-            <button type="submit" id="submitBtn" class="btn-submit"><i class="fas fa-save"></i> ${isEditing ? 'Simpan Perubahan' : 'Upload Postingan'}</button>
-          </div>
-        </form>
-        <button id="logoutBtn" class="btn-logout"><i class="fas fa-sign-out-alt"></i> Logout</button>
-      </div>
+        </div>
+        <div class="form-group">
+          <label>Link Unduhan</label>
+          <div id="dynamic-links-container" class="links-container"></div>
+          <button type="button" id="add-link-btn" class="btn-small"><i class="fas fa-plus-circle"></i> Tambah Link</button>
+        </div>
+        <div class="form-group checkbox-group">
+          <label class="checkbox-label">
+            <input type="checkbox" id="isFeatured" name="isFeatured" ${isEditing && postToEdit.isFeatured ? 'checked' : ''}>
+            <span>Jadikan Pilihan Editor</span>
+          </label>
+        </div>
+        <div class="form-actions">
+          <button type="submit" id="submit-post-btn" class="btn-submit"><i class="fas fa-save"></i> ${isEditing ? 'Simpan Perubahan' : 'Upload Postingan'}</button>
+          <button type="button" id="logout-btn" class="btn-logout"><i class="fas fa-sign-out-alt"></i> Logout</button>
+        </div>
+      </form>
     </div>
   `;
 
-  // Set value untuk select category jika edit
   if (isEditing && formType !== 'info') {
-    const catSelect = document.getElementById('category');
-    if (catSelect) catSelect.value = postToEdit.category;
+    const categorySelect = $('#category');
+    if (categorySelect) categorySelect.value = postToEdit.category;
   }
 
   // Preview gambar
-  const fileInput = document.getElementById('imgFile');
-  const previewDiv = document.getElementById('imagePreview');
+  const fileInput = $('#img-file');
+  const previewContainer = $('#image-preview');
   fileInput.addEventListener('change', (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -588,36 +581,36 @@ document.addEventListener('DOMContentLoaded', () => {
       }
       const reader = new FileReader();
       reader.onload = (ev) => {
-        previewDiv.innerHTML = `<img src="${ev.target.result}" alt="Preview">`;
+        previewContainer.innerHTML = `<img src="${ev.target.result}" alt="Preview">`;
       };
       reader.readAsDataURL(file);
     } else {
-      const oldImg = document.getElementById('imgUrl').value;
+      const oldImg = $('#img-url').value;
       if (oldImg) {
-        previewDiv.innerHTML = `<img src="${oldImg}" alt="Preview">`;
+        previewContainer.innerHTML = `<img src="${oldImg}" alt="Preview">`;
       } else {
-        previewDiv.innerHTML = '<div class="no-image"><i class="fas fa-image"></i><span>Belum ada gambar</span></div>';
+        previewContainer.innerHTML = '<div class="placeholder"><i class="fas fa-image"></i><span>Belum ada gambar</span></div>';
       }
     }
   });
 
   // Dynamic links
-  const linksContainer = document.getElementById('linksContainer');
+  const linksContainer = $('#dynamic-links-container');
   const addLinkRow = (name = '', url = '') => {
-    const div = document.createElement('div');
-    div.className = 'link-row';
-    div.innerHTML = `
-      <input type="text" class="link-name" placeholder="Nama (contoh: MediaFire)" value="${escapeHtml(name)}" required>
-      <input type="url" class="link-url" placeholder="URL link" value="${escapeHtml(url)}" required>
-      <button type="button" class="remove-link"><i class="fas fa-trash-alt"></i></button>
+    const linkEntry = document.createElement('div');
+    linkEntry.className = 'link-entry';
+    linkEntry.innerHTML = `
+      <input type="text" class="link-name-input" placeholder="Nama (contoh: MediaFire)" value="${escapeHtml(name)}" required>
+      <input type="url" class="link-url-input" placeholder="URL link" value="${escapeHtml(url)}" required>
+      <button type="button" class="btn-small remove-link-btn" title="Hapus link"><i class="fas fa-trash-alt"></i> Hapus</button>
     `;
-    linksContainer.appendChild(div);
-    div.querySelector('.remove-link').addEventListener('click', () => div.remove());
+    linksContainer.appendChild(linkEntry);
+    linkEntry.querySelector('.remove-link-btn').addEventListener('click', () => linkEntry.remove());
   };
 
-  document.getElementById('addLinkBtn').addEventListener('click', () => addLinkRow());
+  $('#add-link-btn').addEventListener('click', () => addLinkRow());
 
-  if (isEditing && postToEdit?.links && typeof postToEdit.links === 'object') {
+  if (isEditing && postToEdit.links && typeof postToEdit.links === 'object') {
     for (const [name, url] of Object.entries(postToEdit.links)) {
       if (url) addLinkRow(name, url);
     }
@@ -625,12 +618,9 @@ document.addEventListener('DOMContentLoaded', () => {
     addLinkRow();
   }
 
-  document.getElementById('upload-form').addEventListener('submit', handleSubmit);
-  document.getElementById('logoutBtn').addEventListener('click', handleLogout);
-  document.getElementById('go-to-profile-view').addEventListener('click', (e) => {
-    e.preventDefault();
-    renderProfileView();
-  });
+  $('#upload-form').addEventListener('submit', handleSubmit);
+  $('#logout-btn').addEventListener('click', handleLogout);
+  $('#go-to-profile-view').addEventListener('click', (e) => { e.preventDefault(); renderProfileView(); });
 }
 
 function escapeHtml(str) {
@@ -766,12 +756,31 @@ async function handleDeleteRequest(e) {
                     ${userManagementButtonHTML}
                     ${requestManagementButtonHTML}
                     ${testNotificationButtonHTML} </div>
+                    
+const isModerator = profile.role === 'admin' || profile.role === 'moderator';
+if (isModerator) {
+  const openPanelBtn = document.createElement('button');
+  openPanelBtn.className = 'admin-action-btn';
+  openPanelBtn.style.marginTop = '0.5rem';
+  openPanelBtn.style.width = '100%';
+  openPanelBtn.style.background = 'var(--accent)';
+  openPanelBtn.style.color = 'white';
+  openPanelBtn.innerHTML = `<i class="fas fa-tachometer-alt"></i> Buka Panel ${profile.role === 'admin' ? 'Owner' : 'Admin'}`;
+  openPanelBtn.addEventListener('click', () => {
+    renderAdminPanel();
+  });
+  // Masukkan ke dalam container setelah admin-actions-grid
+  const actionsGrid = document.querySelector('.admin-actions-grid');
+  if (actionsGrid) {
+    actionsGrid.parentNode.insertBefore(openPanelBtn, actionsGrid.nextSibling);
+  }
+}
                 
-                <button id="logout-btn">Logout</button>
+            <button id="logout-profile-btn" class="btn-logout"><i class="fas fa-sign-out-alt"></i> Logout</button>
               `;
               
               authContainer.querySelector('#profile-form').addEventListener('submit', handleProfileUpdate); 
-              authContainer.querySelector('#logout-btn').addEventListener('click', handleLogout); 
+              authContainer.querySelector('#logout-profile-btn').addEventListener('click', handleLogout); 
               authContainer.querySelector('#avatar-upload').addEventListener('change', (e) => { 
                   const file = e.target.files[0]; 
                   if (file) { 
@@ -802,6 +811,196 @@ async function handleDeleteRequest(e) {
               renderLoginView(); 
           }
       }
+      
+async function renderAdminPanel() {
+  const container = authContainer; // 
+  const profile = state.profile;
+  const isOwner = profile?.role === 'admin'; // owner = role 'admin'
+  
+  container.innerHTML = `
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+      <h2>Panel ${isOwner ? 'Owner' : 'Admin'}</h2>
+      <button id="close-panel-btn" class="btn-small" style="background: var(--muted);"><i class="fas fa-arrow-left"></i> Kembali ke Profil</button>
+    </div>
+    <div class="admin-actions-grid" style="grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); margin-bottom: 2rem;">
+      <button id="upload-dlc-from-panel" class="admin-action-btn"><i class="fas fa-plus-square"></i> Upload DLC</button>
+      <button id="upload-info-from-panel" class="admin-action-btn"><i class="fas fa-info-circle"></i> Upload Info</button>
+      <button id="manage-requests-from-panel" class="admin-action-btn"><i class="fas fa-inbox"></i> Kelola Request</button>
+      ${isOwner ? `<button id="mass-notif-btn" class="admin-action-btn"><i class="fas fa-broadcast-tower"></i> Notifikasi Massal</button>` : ''}
+      ${isOwner ? `<button id="manage-all-posts-btn" class="admin-action-btn"><i class="fas fa-edit"></i> Kelola Semua Postingan</button>` : ''}
+      ${isOwner ? `<button id="view-logs-btn" class="admin-action-btn"><i class="fas fa-history"></i> Log Aktivitas</button>` : ''}
+    </div>
+    <div id="panel-content-area">
+      <!-- Konten dinamis akan dimuat di sini -->
+      <p class="muted" style="text-align:center;">Pilih salah satu menu di atas.</p>
+    </div>
+  `;
+
+  // Event tombol kembali
+  $('#close-panel-btn').addEventListener('click', () => {
+    renderProfileView();
+  });
+
+  // Upload DLC
+  $('#upload-dlc-from-panel').addEventListener('click', () => {
+    renderAdminForm(null, 'dlc');
+  });
+  // Upload Info
+  $('#upload-info-from-panel').addEventListener('click', () => {
+    renderAdminForm(null, 'info');
+  });
+  // Kelola Request (sama seperti sebelumnya)
+  $('#manage-requests-from-panel').addEventListener('click', async () => {
+    await renderRequestManagementView();
+    // pastikan tombol kembali di dalam request management mengarah ke panel lagi?
+    // Kita override tombol "Kembali ke Profil" yang ada di renderRequestManagementView
+    const backBtn = $('#go-to-profile-view');
+    if (backBtn) {
+      backBtn.textContent = 'Kembali ke Panel';
+      backBtn.onclick = (e) => {
+        e.preventDefault();
+        renderAdminPanel();
+      };
+    }
+  });
+
+  if (isOwner) {
+    $('#mass-notif-btn').addEventListener('click', showMassNotificationForm);
+    $('#manage-all-posts-btn').addEventListener('click', renderAllPostsManagement);
+    $('#view-logs-btn').addEventListener('click', renderActivityLogs);
+  }
+}
+
+// Fungsi untuk owner: notifikasi massal
+function showMassNotificationForm() {
+  const area = $('#panel-content-area');
+  area.innerHTML = `
+    <div class="form-card">
+      <h3>Kirim Notifikasi Massal</h3>
+      <form id="mass-notif-form">
+        <label>Judul Notifikasi</label>
+        <input type="text" id="notif-title" required placeholder="Contoh: Update Baru!">
+        <label>Pesan</label>
+        <textarea id="notif-body" rows="3" required placeholder="Isi pesan..."></textarea>
+        <label>URL (opsional)</label>
+        <input type="url" id="notif-url" placeholder="https://...">
+        <button type="submit" class="btn-submit">Kirim ke Semua Pengguna</button>
+      </form>
+    </div>
+  `;
+  $('#mass-notif-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const title = $('#notif-title').value;
+    const body = $('#notif-body').value;
+    const url = $('#notif-url').value || window.location.href;
+    try {
+      const { error } = await supabase.functions.invoke('send-push-notification', {
+        body: { title, body, url }
+      });
+      if (error) throw error;
+      showNotification('Notifikasi massal terkirim!', 'success');
+      area.innerHTML = '<p class="muted">Notifikasi telah dikirim ke semua subscriber.</p>';
+    } catch (err) {
+      showNotification('Gagal mengirim: ' + err.message, 'error');
+    }
+  });
+}
+
+// Owner: kelola semua postingan (edit/hapus langsung)
+async function renderAllPostsManagement() {
+  const area = $('#panel-content-area');
+  area.innerHTML = '<p>Memuat semua postingan...</p>';
+  const { data: posts, error } = await supabase.from('posts').select('*').order('created_at', { ascending: false });
+  if (error) {
+    area.innerHTML = '<p class="error">Gagal memuat postingan.</p>';
+    return;
+  }
+  if (posts.length === 0) {
+    area.innerHTML = '<p class="muted">Belum ada postingan.</p>';
+    return;
+  }
+  let html = `<div style="overflow-x: auto;"><table class="admin-posts-table">
+    <thead><tr><th>Judul</th><th>Kategori</th><th>Tanggal</th><th>Aksi</th></tr></thead><tbody>`;
+  posts.forEach(post => {
+    html += `<tr>
+      <td>${escapeHtml(post.title)}</td>
+      <td>${post.category}</td>
+      <td>${new Date(post.created_at).toLocaleDateString()}</td>
+      <td>
+        <button class="edit-post-btn btn-small" data-id="${post.id}">Edit</button>
+        <button class="delete-post-btn btn-small danger" data-id="${post.id}">Hapus</button>
+      </td>
+    </tr>`;
+  });
+  html += `</tbody></table></div>`;
+  area.innerHTML = html;
+
+  // Event edit
+  $$('.edit-post-btn').forEach(btn => {
+    btn.addEventListener('click', async () => {
+      const postId = btn.dataset.id;
+      const post = posts.find(p => p.id == postId);
+      if (post) {
+        const formType = (post.category.toLowerCase() === 'informasi') ? 'info' : 'dlc';
+        renderAdminForm(post, formType);
+      }
+    });
+  });
+  // Event hapus
+  $$('.delete-post-btn').forEach(btn => {
+    btn.addEventListener('click', async () => {
+      const postId = btn.dataset.id;
+      const post = posts.find(p => p.id == postId);
+      if (post && confirm(`Hapus postingan "${post.title}"?`)) {
+        const { error } = await supabase.from('posts').delete().eq('id', postId);
+        if (error) showNotification('Gagal hapus: ' + error.message, 'error');
+        else {
+          showNotification('Postingan dihapus', 'success');
+          renderAllPostsManagement();
+          fetchPosts(); // refresh global
+        }
+      }
+    });
+  });
+}
+
+// Owner: log aktivitas (memerlukan tabel 'admin_logs' di Supabase)
+// Sebelum digunakan, buat tabel admin_logs dengan fields: id, user_id, action, created_at
+// Dan setiap admin melakukan sesuatu (edit, hapus, upload) catat ke tabel ini.
+async function renderActivityLogs() {
+  const area = $('#panel-content-area');
+  area.innerHTML = '<p>Memuat log...</p>';
+  const { data: logs, error } = await supabase
+    .from('admin_logs')
+    .select('*, profiles(nickname)')
+    .order('created_at', { ascending: false })
+    .limit(100);
+  if (error) {
+    area.innerHTML = '<p class="muted">Belum ada log aktivitas. Buat tabel <code>admin_logs</code> terlebih dahulu.</p>';
+    return;
+  }
+  if (!logs || logs.length === 0) {
+    area.innerHTML = '<p class="muted">Belum ada aktivitas tercatat.</p>';
+    return;
+  }
+  let html = `<ul class="log-list">`;
+  logs.forEach(log => {
+    html += `<li><strong>${log.profiles?.nickname || 'Unknown'}</strong> - ${log.action} <small>(${new Date(log.created_at).toLocaleString()})</small></li>`;
+  });
+  html += `</ul>`;
+  area.innerHTML = html;
+}
+
+async function logAdminAction(action, postId = null) {
+  if (!state.user) return;
+  const role = state.profile?.role;
+  if (role !== 'admin' && role !== 'moderator') return;
+  await supabase.from('admin_logs').insert({
+    user_id: state.user.id,
+    action: `${action} ${postId ? `(post ID: ${postId})` : ''}`,
+    created_at: new Date().toISOString()
+  }).catch(e => console.warn('Gagal catat log:', e));
+}
 
       async function handleProfileUpdate(e) {
           e.preventDefault(); const form = e.target; const user = state.user; const newNickname = form.nickname.value; const avatarFile = form.avatar.files[0]; let avatar_url = state.profile.avatar_url;
@@ -837,14 +1036,16 @@ async function handleDeleteRequest(e) {
           await renderProfileView(); 
         }
       }
-      async function handleLogout() { 
-        await supabase.auth.signOut(); 
-        state.user = null; 
-        state.profile = null; 
-        await setupUIBasedOnAuth();
-        showNotification('Anda telah logout.', 'success'); 
-        closeAuthModal(); 
-      }
+      async function handleLogout() {
+    if (confirm('Apakah Anda yakin ingin logout?')) {
+    await supabase.auth.signOut();
+    state.user = null;
+    state.profile = null;
+    await setupUIBasedOnAuth();
+    showNotification('Anda telah logout.', 'success');
+    closeAuthModal();
+  }
+}
 
       // ================= MODIFIKASI HANDLE SUBMIT =================
       async function handleSubmit(e) {
@@ -1292,6 +1493,11 @@ async function handleRequestSubmit(e) {
       $('#auth-bottom-nav-btn').addEventListener('click', handleAuthButtonClick);
       $('#request-menu-btn').addEventListener('click', handleRequestButtonClick);
       $('#chat-menu-btn').addEventListener('click', handleChatButtonClick);
+ 
+const marketplaceBtn = document.getElementById('marketplace-menu-btn');
+const marketplaceBottomBtn = document.getElementById('marketplace-bottom-nav');
+if (marketplaceBtn) marketplaceBtn.addEventListener('click', showMarketplaceView);
+if (marketplaceBottomBtn) marketplaceBottomBtn.addEventListener('click', showMarketplaceView);
       
       $('#notifications-toggle').addEventListener('click', () => {
         if ($('#notifications-toggle').classList.contains('subscribed')) {
@@ -1302,6 +1508,122 @@ async function handleRequestSubmit(e) {
           askNotificationPermission();
         }
       });
-      
+    let marketplaceData = [];
+    let isLoadingMarketplace = false;
+    
+    async function fetchMarketplaceUpdates() {
+  try {
+    isLoadingMarketplace = true;
+    showMarketplaceSkeleton(true);
+    
+    const response = await fetch('https://net-secondary.web.minecraft-services.net/api/v1.0/en-us/marketplace/', {
+      mode: 'cors',
+      headers: { 'Accept': 'application/json' }
+    });
+    
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+    const data = await response.json();
+    // API mengembalikan { result: [...] } atau langsung array?
+    marketplaceData = data.result || data;
+    
+    renderMarketplaceGrid();
+  } catch (error) {
+    console.error('Gagal fetch marketplace:', error);
+    showNotification('Gagal mengambil data Marketplace. Coba lagi nanti.', 'error');
+    document.getElementById('marketplace-grid').innerHTML = '<p class="error-message">Gagal memuat data. Mungkin terblokir CORS. Coba gunakan VPN atau proxy.</p>';
+  } finally {
+    isLoadingMarketplace = false;
+    showMarketplaceSkeleton(false);
+  }
+}
+
+function showMarketplaceSkeleton(show) {
+  const skeletonContainer = document.getElementById('marketplace-skeleton');
+  const grid = document.getElementById('marketplace-grid');
+  if (show) {
+    skeletonContainer.classList.remove('hidden');
+    grid.classList.add('hidden');
+    // Buat skeleton card
+    skeletonContainer.innerHTML = '';
+    for (let i = 0; i < 6; i++) {
+      skeletonContainer.innerHTML += `
+        <div class="skeleton-card">
+          <div class="skeleton-img shimmer"></div>
+          <div class="skeleton-content">
+            <div class="skeleton-line shimmer" style="width: 60%"></div>
+            <div class="skeleton-line shimmer" style="width: 40%"></div>
+            <div class="skeleton-line shimmer" style="width: 80%"></div>
+          </div>
+        </div>
+      `;
+    }
+  } else {
+    skeletonContainer.classList.add('hidden');
+    grid.classList.remove('hidden');
+  }
+}
+
+function renderMarketplaceGrid() {
+  const grid = document.getElementById('marketplace-grid');
+  if (!marketplaceData.length) {
+    grid.innerHTML = '<p class="empty-state">Tidak ada item marketplace saat ini.</p>';
+    return;
+  }
+  
+  grid.innerHTML = marketplaceData.map(item => {
+    const priceText = item.price ? `${item.price} Minecoin` : 'Gratis';
+    const rating = item.rating || 0;
+    const stars = '★'.repeat(Math.floor(rating)) + '☆'.repeat(5 - Math.floor(rating));
+    const packType = item.packType || (item.type === 'SkinPack' ? 'Skin Pack' : item.type);
+    
+    return `
+      <div class="marketplace-card">
+        <div class="marketplace-img-wrapper">
+          <img src="${item.image}" alt="${item.title}" loading="lazy" class="marketplace-img">
+          <span class="pack-type-badge">${packType}</span>
+        </div>
+        <div class="marketplace-content">
+          <h3 class="marketplace-title">${escapeHtml(item.title)}</h3>
+          <p class="marketplace-author">👤 ${escapeHtml(item.author)}</p>
+          <div class="marketplace-meta">
+            <span class="price">💰 ${priceText}</span>
+            <span class="rating" title="${rating} dari 5">⭐ ${stars} ${rating}</span>
+          </div>
+          <p class="marketplace-desc">${escapeHtml(item.description.substring(0, 100))}${item.description.length > 100 ? '…' : ''}</p>
+          <div class="marketplace-tags">
+            ${item.tags.slice(0, 3).map(tag => `<span class="tag">${tag.replace('tag.', '').replace('genre.', '')}</span>`).join('')}
+          </div>
+          <a href="${item.url}" target="_blank" rel="noopener noreferrer" class="btn-marketplace">
+            <i class="fab fa-microsoft"></i> Lihat di Marketplace
+          </a>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+function showMarketplaceView() {
+  // Sembunyikan view lain
+  document.querySelector('main').classList.add('hidden');
+  document.getElementById('chat-view').classList.add('hidden');
+  const marketplaceView = document.getElementById('marketplace-view');
+  marketplaceView.classList.remove('hidden');
+  
+  // Update active menu
+  document.querySelectorAll('.menu-item, .nav-item').forEach(el => el.classList.remove('active'));
+  document.getElementById('marketplace-menu-btn')?.classList.add('active');
+  document.getElementById('marketplace-bottom-nav')?.classList.add('active');
+  
+  // Judul halaman (jika ada elemen .page-title)
+  const pageTitle = document.querySelector('#marketplace-view .page-title');
+  if (pageTitle) pageTitle.textContent = '🔥 Update Marketplace Minecraft';
+  
+  // Fetch data jika belum ada atau refresh
+  if (marketplaceData.length === 0) {
+    fetchMarketplaceUpdates();
+  } else {
+    renderMarketplaceGrid();
+  }
+}
       init();
     });
